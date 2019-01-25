@@ -210,11 +210,9 @@ Singularity container containing following apps for ChIP-seq and CUT&RUN process
 	mv /fastqc_pre.py /appscripts/
 	mv /trim_qc.py /appscripts/
 	mv /bowtie2_alignment_chip.py /appscripts/
-	mv /bowtie2_alignment_chip_1k.py /appscripts/
 	mv /mapqc_fingerprint.py /appscripts/
 	mv /bam_to_bed_bg_bw.py /appscripts/
 	mv /chipseq.py /appscripts/
-	mv /chipseq_1k.py /appscripts/
 
 %apprun fastqc_pre
 	python /appscripts/fastqc_pre.py
@@ -225,9 +223,6 @@ Singularity container containing following apps for ChIP-seq and CUT&RUN process
 %apprun bowtie2_alignment_chip
 	python /appscripts/bowtie2_alignment_chip.py
 
-%apprun bowtie2_alignment_chip_1k
-	python /appscripts/bowtie2_alignment_chip_1k.py
-
 %apprun mapqc_fingerprint
 	python /appscripts/mapqc_fingerprint.py
 
@@ -236,8 +231,6 @@ Singularity container containing following apps for ChIP-seq and CUT&RUN process
 
 %apprun chipseq_full
 	python /appscripts/chipseq.py	
-
-%apprun chipseq_full_1k
-	python /appscripts/chipseq_1k.py	
+	
 
 
