@@ -18,7 +18,6 @@ Singularity container containing following apps for ChIP-seq and CUT&RUN process
 	bam_to_bed_bg_bw.py /
 	chipseq.py /
 
-
 %post
 	mkdir /genomes
 	mkdir /genomes/test

@@ -25,7 +25,7 @@ else:
 	print '\n'
 
 #prepare input files
-input_files = sorted(glob.glob('*val*'))
+input_files = sorted(glob.glob('*trimmed*'))
 
 if len(input_files) == 0:
 	print 'No quality-controlled input files from trim_galore, checking input folder for fastqc output...'
