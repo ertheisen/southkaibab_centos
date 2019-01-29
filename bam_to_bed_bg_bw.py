@@ -22,7 +22,7 @@ os.chdir('/data')
 print 'Current working directory is:' +  os.getcwd()
 #######################################
 bam_files = sorted(glob.glob('*bam'))
-if bam_files == 0:
+if len(bam_files) == 0:
 	# Change directory within container
 	os.chdir('/data/bams')
 	print 'Current working directory is:' +  os.getcwd()
@@ -33,33 +33,36 @@ if bam_files == 0:
 	else work_dir = 2
 else work_dir = 1
 
-bai_files = sorted(glob.glob('*bai'))
-if bai_files == 0:
-	print 'Bam files will be indexed. Sorting and indexing...'
-	for i in range(len(bam_files)):
-		print '\n'
-		#create string for system command to sort
-		temp_str = 'samtools sort ' + bam_files[i] + ' sorted.' + bam_files[i].split('.')[0]
-		print temp_str
+index = os.path.isdir('/data/bams/sorted_bams') 
+if index == False:
 
-		check_output(temp_str, shell=True)
-		print '\n'
+	bai_files = sorted(glob.glob('*bai'))
+	if bai_files == 0:
+		print 'Bam files will be indexed. Sorting and indexing...'
+		for i in range(len(bam_files)):
+			print '\n'
+			#create string for system command to sort
+			temp_str = 'samtools sort ' + bam_files[i] + ' sorted.' + bam_files[i].split('.')[0]
+			print temp_str
 
-	sorted_files = sorted(glob.glob('sorted*'))
-	os.mkdir('/data/sorted_bams')
-	print 'Moving sorted bams to new directory'
-	output_dir = '/data/sorted_bams'
-	for i in range(len(sorted_files)):
-		shutil.move(sorted_files[i], output_dir)
-	os.chdir('/data/sorted_bams')
-	for i in range(len(sorted_files)):
-		print '\n'	
-		#create string for system command to index
-		temp_str = 'samtools index /data/sorted_bams' + sorted_files[i]
-		print temp_str
+			check_output(temp_str, shell=True)
+			print '\n'
 
-		check_output(temp_str, shell=True)
-		print '\n'
+		sorted_files = sorted(glob.glob('sorted*'))
+		os.mkdir('/data/sorted_bams')
+		print 'Moving sorted bams to new directory'
+		output_dir = '/data/sorted_bams'
+		for i in range(len(sorted_files)):
+			shutil.move(sorted_files[i], output_dir)
+		os.chdir('/data/sorted_bams')
+		for i in range(len(sorted_files)):
+			print '\n'	
+			#create string for system command to index
+			temp_str = 'samtools index /data/sorted_bams' + sorted_files[i]
+			print temp_str
+
+			check_output(temp_str, shell=True)
+			print '\n'
 
 ##############################################
 
@@ -89,14 +92,7 @@ bed_names = [f.replace('bam', 'bed') for f in datafiles]
 for i in range(len(datafiles)):
 	temp_bed = BedTool(datafiles[i]).bam_to_bed(bedpe=False).to_dataframe()
 
-	#need to strip out start and end position of whole insert (bed12 is both reads)
-	#column names actually represent <chrom>, <start of insert>, <end of insert>
-	temp_bed_stripped = temp_bed.iloc[:,[0,1,5]].sort_values(by = ['chrom', 'start', 'strand'])
-
-	#calculate insert size as column 4 and save file with bed_name
-	temp_bed_stripped['length'] = temp_bed_stripped['strand'] - temp_bed_stripped['start']
-
-	temp_bed_stripped.to_csv(bed_names[i], sep="\t", header = False, index = False)
+	temp_bed.to_csv(bed_names[i], sep="\t", header = False, index = False)
 
 print 'Finished generating bed files:'
 print '\n'
@@ -168,9 +164,6 @@ print 'whole insert bigwig files:' + '\n' + '\n'.join(bw_names)
 
 os.mkdir('/data/bams/beds')
 os.mkdir('/data/bams/norm_bedgraphs')
-os.mkdir('/data/bedgraphs/size_selected_small')
-os.mkdir('/data/bedgraphs/size_selected_med')
-os.mkdir('/data/bedgraphs/size_selected_big')
 os.mkdir('/data/bams/norm_bigwigs')
 
 output_dir0 = '/data/bams/beds'
@@ -198,7 +191,11 @@ print 'Runtime (hh:mm:ss): ' + str(datetime.now() - startTime)
 
 startTime = datetime.now()
 
-os.chdir('/data/sorted_bams')
+if index == TRUE:
+	os.chdir('/data/bams/sorted_bams')
+else:
+	os.chdir('/data/sorted_bams')
+
 print 'Current working directory is:' +  os.getcwd()
 
 print 'Running plotFingerprint for all bam files in folder'

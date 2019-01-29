@@ -326,14 +326,7 @@ bed_names = [f.replace('bam', 'bed') for f in datafiles]
 for i in range(len(datafiles)):
 	temp_bed = BedTool(datafiles[i]).bam_to_bed(bedpe=False).to_dataframe()
 
-	#need to strip out start and end position of whole insert (bed12 is both reads)
-	#column names actually represent <chrom>, <start of insert>, <end of insert>
-	temp_bed_stripped = temp_bed.iloc[:,[0,1,5]].sort_values(by = ['chrom', 'start', 'strand'])
-
-	#calculate insert size as column 4 and save file with bed_name
-	temp_bed_stripped['length'] = temp_bed_stripped['strand'] - temp_bed_stripped['start']
-
-	temp_bed_stripped.to_csv(bed_names[i], sep="\t", header = False, index = False)
+	temp_bed.to_csv(bed_names[i], sep="\t", header = False, index = False)
 
 
 print 'Finished generating bed files:'
@@ -439,9 +432,6 @@ print '\n'
 
 os.mkdir('/data/bams/beds')
 os.mkdir('/data/bams/norm_bedgraphs')
-os.mkdir('/data/bedgraphs/size_selected_small')
-os.mkdir('/data/bedgraphs/size_selected_med')
-os.mkdir('/data/bedgraphs/size_selected_big')
 os.mkdir('/data/bams/norm_bigwigs')
 
 output_dir0 = '/data/bams/beds'
