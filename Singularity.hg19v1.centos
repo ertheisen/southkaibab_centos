@@ -7,7 +7,7 @@ Singularity container containing following apps for ChIP-seq and CUT&RUN process
  trim_qc : Fastq trimming with Trim Galore and FastQC post trim
  bowtie2_alignment_chip: Alignment pipeline using default sensitivity and mapping parameters in bowtie2, assumes trimmed fastqs, sensitive end-to-end alignment, overlap allowed, default insert from 10-500 bp, assumes single end can work with >= 75 bp reads
  mapqc_fingerprint: Use deeptools to assess enrichment quality
- bam_to_bed_bg_bw: Generate downstream files for archival files using same pipeline - assumes hg19 alignment
+ bams: Generate downstream files for archival files using same pipeline - assumes hg19 alignment
  chipseq_full: full pipeline from fastqc to mapped bam, bed, normalized bedgraph, and normalized bigwig with mapping qc using plotFingerprint from deeptools - default bowtie2 chip alignment
 
 %files
@@ -227,7 +227,7 @@ Singularity container containing following apps for ChIP-seq and CUT&RUN process
 %apprun mapqc_fingerprint
 	python /appscripts/mapqc_fingerprint.py
 
-%apprun bam_to_bed_bg_bw
+%apprun bams
 	python /appscripts/bam_to_bed_bg_bw.py
 
 %apprun chipseq_full
