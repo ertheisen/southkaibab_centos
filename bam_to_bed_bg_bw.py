@@ -30,8 +30,10 @@ if len(bam_files) == 0:
 	if bam_files == 0:
 		print 'No bam files detected. Exiting...'
 		sys.exit()
-	else work_dir = 2
-else work_dir = 1
+	else:
+		work_dir = 2
+else:
+		work_dir = 1
 
 index = os.path.isdir('/data/bams/sorted_bams') 
 if index == False:

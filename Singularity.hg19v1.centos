@@ -67,6 +67,7 @@ Singularity container containing following apps for ChIP-seq and CUT&RUN process
 				   libtiff-devel 
 
 	yum install -y libcurl-devel
+
 	yum install -y libX11-devel libXt-devel 
 	yum install -y cairo pango-devel 
 	yum install -y libicu-devel
