@@ -389,7 +389,7 @@ else:
 	genome_size = DF[1].sum()
 	
 	scaling_factor = []
-	for item in read_count:
+	for i in range(len(read_count)):
 		scaling_factor.append(float(genome_size) / read_count[i])
 
 	for i in range(len(bed_names)):

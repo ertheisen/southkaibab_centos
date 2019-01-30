@@ -213,7 +213,6 @@ Singularity container containing following apps for ChIP-seq and CUT&RUN process
 	mv /bam_to_bed_bg_bw.py /appscripts/
 	mv /chipseq.py /appscripts/
 
-
 %apprun fastqc_pre
 	python /appscripts/fastqc_pre.py
 
