@@ -321,6 +321,7 @@ print '\n'
 
 #generate bed file names
 bed_names = [f.replace('bam', 'bed') for f in datafiles]
+stripped_names = [f.replace('.bam', '_stripped.bed') for f in datafiles]
 
 #generate bed files with bam_to_bed tool (makes bed12 format)
 for i in range(len(datafiles)):
@@ -328,6 +329,11 @@ for i in range(len(datafiles)):
 
 	temp_bed.to_csv(bed_names[i], sep="\t", header = False, index = False)
 
+	temp_bed_stripped = temp_bed.iloc[:,[0,1,2]].sort_values(by = ['chrom', 'start', 'end'])
+
+	temp_bed_stripped['length'] = temp_bed_stripped['end'] - temp_bed_stripped['start']
+
+	temp_bed_stripped.to_csv(stripped_names[i], sep="\t", header = False, index = False)
 
 print 'Finished generating bed files:'
 print '\n'
@@ -378,7 +384,7 @@ else:
 	print '\n'
 	#count total number of reads in each bed file (before size selection)
 	read_count = []
-	for item in bed_names:
+	for item in stripped_names:
 		read_count.append(BedTool(item).count())
 
 	print read_count
@@ -403,7 +409,7 @@ else:
 
 #run bedtools genomecov to generate bedgraph files
 for i in range(len(bg_names)):
-	BedTool(bed_names[i]).genome_coverage(bg = True, genome = 'hg19', scale = scaling_factor[i]).moveto(bg_names[i])
+	BedTool(stripped_names[i]).genome_coverage(bg = True, genome = 'hg19', scale = scaling_factor[i]).moveto(bg_names[i])
 
 print 'Finished generating bedgraph files:'
 print '\n'
@@ -437,6 +443,7 @@ os.mkdir('/data/bams/norm_bigwigs')
 output_dir0 = '/data/bams/beds'
 for i in range(len(bed_names)):
 	shutil.move(bed_names[i], output_dir0)
+	shutil.move(stripped_names[i], output_dir0)
 
 print 'Moving bedgraphs to output folder'
 print '\n'
