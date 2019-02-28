@@ -134,6 +134,10 @@ Singularity container containing following apps for ChIP-seq and CUT&RUN process
 	R --slave -e 'library("BiocManager"); BiocManager::install("IRkernel", dependencies=TRUE, update=TRUE, ask=FALSE); IRkernel::installspec(user = FALSE)'
 	R --slave -e 'library("BiocManager"); BiocManager::install("Cairo", dependencies=TRUE, update=TRUE, ask=FALSE)'
 	R --slave -e 'library("BiocManager"); BiocManager::install("csaw", dependencies=TRUE, update=TRUE, ask=FALSE)'
+	R --slave -e 'library("BiocManager"); BiocManager::install("org.Hs.eg.db", dependencies=TRUE, update=TRUE, ask=FALSE)'
+	R --slave -e 'library("BiocManager"); BiocManager::install("AnnotationDbi", dependencies=TRUE, update=TRUE, ask=FALSE)'
+	R --slave -e 'library("BiocManager"); BiocManager::install("TxDb.Hsapiens.UCSC.hg19.knownGene", dependencies=TRUE, update=TRUE, ask=FALSE)'
+
 
 	R --slave -e 'install.packages("snow", repos="http://cran.us.r-project.org")'
 	R --slave -e 'install.packages("snowfall", repos="http://cran.us.r-project.org")'
